@@ -1,5 +1,9 @@
+import 'package:asq_app/screens/session_wrapper.dart';
+import 'package:asq_app/screens/session_loading.dart';
 import 'package:asq_app/spaces.dart';
+import 'package:asq_app/widgets/background.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class NewSessionTile extends StatelessWidget {
   const NewSessionTile({super.key});
@@ -16,7 +20,15 @@ class NewSessionTile extends StatelessWidget {
         children: [
           CupertinoButton(
             child: Icon(CupertinoIcons.add_circled, size: p8),
-            onPressed: () {},
+            onPressed: () {
+              showCupertinoDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return SessionWrapper();
+                },
+              );
+            },
           ),
           Text(
             "New session",

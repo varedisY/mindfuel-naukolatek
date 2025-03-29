@@ -11,13 +11,19 @@ class Background extends StatelessWidget {
       Colors.blue,
       Colors.black,
     ],
+    // this.colors = const [
+    //   Colors.blueAccent,
+    //   Colors.blueGrey,
+    //   Colors.tealAccent,
+    //   Colors.black,
+    // ],
   });
 
   @override
   Widget build(BuildContext context) {
     return AnimatedMeshGradient(
       colors: colors,
-      options: AnimatedMeshGradientOptions(),
+      options: AnimatedMeshGradientOptions(speed: 0.1, frequency: 3),
     );
   }
 }

@@ -11,6 +11,8 @@ class HomeScreen extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           CupertinoSliverNavigationBar(largeTitle: Text("Sessions")),
+
+          // SliverFillRemaining(child: Playground(), hasScrollBody: false),
           SliverPadding(padding: EdgeInsets.all(p4), sliver: SessionGrid()),
         ],
       ),
