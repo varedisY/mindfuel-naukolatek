@@ -2,6 +2,7 @@ import 'package:asq_app/screens/session.dart';
 import 'package:asq_app/screens/session_loading.dart';
 import 'package:asq_app/spaces.dart';
 import 'package:asq_app/state/session_provider.dart';
+import 'package:asq_app/styles.dart';
 import 'package:asq_app/widgets/background.dart';
 import 'package:asq_app/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,7 +43,10 @@ class SessionWrapper extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GlassButton(
-                      text: "Cancel",
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: sessionTextColor),
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

@@ -23,7 +23,7 @@ Question _$QuestionFromJson(
 /// @nodoc
 mixin _$Question {
 
- String get content; List<String> get hints; int get duration; List<String> get followUpOptions;
+ String get content; List<String> get hints;
 /// Create a copy of Question
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -36,16 +36,16 @@ $QuestionCopyWith<Question> get copyWith => _$QuestionCopyWithImpl<Question>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Question&&(identical(other.content, content) || other.content == content)&&const DeepCollectionEquality().equals(other.hints, hints)&&(identical(other.duration, duration) || other.duration == duration)&&const DeepCollectionEquality().equals(other.followUpOptions, followUpOptions));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Question&&(identical(other.content, content) || other.content == content)&&const DeepCollectionEquality().equals(other.hints, hints));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,content,const DeepCollectionEquality().hash(hints),duration,const DeepCollectionEquality().hash(followUpOptions));
+int get hashCode => Object.hash(runtimeType,content,const DeepCollectionEquality().hash(hints));
 
 @override
 String toString() {
-  return 'Question(content: $content, hints: $hints, duration: $duration, followUpOptions: $followUpOptions)';
+  return 'Question(content: $content, hints: $hints)';
 }
 
 
@@ -56,7 +56,7 @@ abstract mixin class $QuestionCopyWith<$Res>  {
   factory $QuestionCopyWith(Question value, $Res Function(Question) _then) = _$QuestionCopyWithImpl;
 @useResult
 $Res call({
- String content, List<String> hints, int duration, List<String> followUpOptions
+ String content, List<String> hints
 });
 
 
@@ -73,12 +73,10 @@ class _$QuestionCopyWithImpl<$Res>
 
 /// Create a copy of Question
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? content = null,Object? hints = null,Object? duration = null,Object? followUpOptions = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? content = null,Object? hints = null,}) {
   return _then(_self.copyWith(
 content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,hints: null == hints ? _self.hints : hints // ignore: cast_nullable_to_non_nullable
-as List<String>,duration: null == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
-as int,followUpOptions: null == followUpOptions ? _self.followUpOptions : followUpOptions // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }
@@ -90,7 +88,7 @@ as List<String>,
 @JsonSerializable()
 
 class _Person implements Question {
-  const _Person({required this.content, required final  List<String> hints, required this.duration, required final  List<String> followUpOptions}): _hints = hints,_followUpOptions = followUpOptions;
+  const _Person({required this.content, required final  List<String> hints}): _hints = hints;
   factory _Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
 @override final  String content;
@@ -99,14 +97,6 @@ class _Person implements Question {
   if (_hints is EqualUnmodifiableListView) return _hints;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_hints);
-}
-
-@override final  int duration;
- final  List<String> _followUpOptions;
-@override List<String> get followUpOptions {
-  if (_followUpOptions is EqualUnmodifiableListView) return _followUpOptions;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_followUpOptions);
 }
 
 
@@ -123,16 +113,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Person&&(identical(other.content, content) || other.content == content)&&const DeepCollectionEquality().equals(other._hints, _hints)&&(identical(other.duration, duration) || other.duration == duration)&&const DeepCollectionEquality().equals(other._followUpOptions, _followUpOptions));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Person&&(identical(other.content, content) || other.content == content)&&const DeepCollectionEquality().equals(other._hints, _hints));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,content,const DeepCollectionEquality().hash(_hints),duration,const DeepCollectionEquality().hash(_followUpOptions));
+int get hashCode => Object.hash(runtimeType,content,const DeepCollectionEquality().hash(_hints));
 
 @override
 String toString() {
-  return 'Question(content: $content, hints: $hints, duration: $duration, followUpOptions: $followUpOptions)';
+  return 'Question(content: $content, hints: $hints)';
 }
 
 
@@ -143,7 +133,7 @@ abstract mixin class _$PersonCopyWith<$Res> implements $QuestionCopyWith<$Res> {
   factory _$PersonCopyWith(_Person value, $Res Function(_Person) _then) = __$PersonCopyWithImpl;
 @override @useResult
 $Res call({
- String content, List<String> hints, int duration, List<String> followUpOptions
+ String content, List<String> hints
 });
 
 
@@ -160,12 +150,10 @@ class __$PersonCopyWithImpl<$Res>
 
 /// Create a copy of Question
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? content = null,Object? hints = null,Object? duration = null,Object? followUpOptions = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? content = null,Object? hints = null,}) {
   return _then(_Person(
 content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,hints: null == hints ? _self._hints : hints // ignore: cast_nullable_to_non_nullable
-as List<String>,duration: null == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
-as int,followUpOptions: null == followUpOptions ? _self._followUpOptions : followUpOptions // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }

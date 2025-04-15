@@ -1,9 +1,35 @@
+import 'package:asq_app/modals/welcome_modal.dart';
 import 'package:asq_app/spaces.dart';
 import 'package:asq_app/widgets/session_grid.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:localstorage/localstorage.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final isFirstTime = bool.parse(
+        localStorage.getItem('isFirstTime') ?? "true",
+      );
+
+      if (isFirstTime) {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => WelcomeModal(),
+        );
+        localStorage.setItem('isFirstTime', "false");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

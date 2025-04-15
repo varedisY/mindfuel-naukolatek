@@ -11,8 +11,6 @@ abstract class Question with _$Question {
   const factory Question({
     required String content,
     required List<String> hints,
-    required int duration,
-    required List<String> followUpOptions,
   }) = _Person;
 
   factory Question.fromJson(Map<String, Object?> json) =>

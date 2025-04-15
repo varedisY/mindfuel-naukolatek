@@ -5,7 +5,7 @@ import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AIService {
-  static final aiSystemMessage = OpenAIChatCompletionChoiceMessageModel(
+  static final aiCreateSystemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text('''
 
@@ -18,25 +18,24 @@ ZACHOWAJ FORMAT:
     "Podpowiedź 1",
     "Podpowiedź 2" 
   ],
-  "duration": 90,
-  "followUpOptions": [
-      "Chcę pogłębić tę refleksję",
-      "Wolę zmienić temat"
-  ]
+
 }]
 
 ZASADY:
 - Odpowiedź generuj w formacie JSON
 - Absolutny zakaz generowania typowych pytań typu "Jak się czujesz?"
-- Minimum 70% pytań musi używać niestandardowych porównań
 - Rotuj style: poetycki, filozoficzny, dziecięcy, naukowy
-- W co 5-tym pytaniu zastosuj całkowicie absurdalne podejście ("Gdybyś miał(a) zaprojektować zapach spokoju, jakie miałby nuty?")
-- Używaj konkretów zamiast ogólników ("Który kąt w twoim mieszkaniu najlepiej oddaje twój obecny stan?")
+'''),
+    ],
+    role: OpenAIChatMessageRole.assistant,
+  );
 
-PRZYKŁADY DOBREJ ODPOWIEDZI:
-"content": "Jeśli twoje myśli byłyby ptakami, jaki gatunek dominuje dziś w twoim 'ptasim rezerwacie'?" 
-"content": "Jaką nieoczywistą supermoc dał ci dzisiejszy dzień?"
-"content": "Gdybyś mógł(a) wysłać wiadomość do siebie sprzed roku jednym zapachem, co by to było?"
+  static final aiOutcomeSystemMessage = OpenAIChatCompletionChoiceMessageModel(
+    content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text('''
+
+Jako asystent mindfulness stworz sprawozdanie na temat odpowiedzi usera:
+Przeprowadz głeboką analize i przedstaw swoje wnioski.
 '''),
     ],
     role: OpenAIChatMessageRole.assistant,
@@ -50,8 +49,19 @@ PRZYKŁADY DOBREJ ODPOWIEDZI:
     OpenAI.apiKey = apiKey;
   }
 
-  Future<List<Question>> create() async {
-    final requestMessages = [aiSystemMessage];
+  Future<List<Question>> createOutcome() async {
+    final aiOutcomeUserMessage = OpenAIChatCompletionChoiceMessageModel(
+      content: [
+        OpenAIChatCompletionChoiceMessageContentItemModel.text('''
+
+Jako asystent mindfulness stworz sprawozdanie na temat odpowiedzi usera:
+Przeprowadz głeboką analize i przedstaw swoje wnioski.
+'''),
+      ],
+      role: OpenAIChatMessageRole.assistant,
+    );
+
+    final requestMessages = [aiCreateSystemMessage];
 
     try {
       final response = await OpenAI.instance.chat.create(
@@ -69,7 +79,7 @@ PRZYKŁADY DOBREJ ODPOWIEDZI:
       );
 
       final List<dynamic> questions = jsonResponse['questions'];
-
+      print(questions);
       return questions.map((question) => Question.fromJson(question)).toList();
     } catch (e) {
       print('Error in create: $e');
@@ -77,30 +87,29 @@ PRZYKŁADY DOBREJ ODPOWIEDZI:
     }
   }
 
-  Stream<String> generateStream(String prompt) async* {
+  Future<List<Question>> createQuestions() async {
+    final requestMessages = [aiCreateSystemMessage];
+
     try {
-      final userMessage = OpenAIChatCompletionChoiceMessageModel(
-        content: [
-          OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt),
-        ],
-        role: OpenAIChatMessageRole.user,
-      );
-
-      final stream = OpenAI.instance.chat.createStream(
+      final response = await OpenAI.instance.chat.create(
         model: "gpt-4o-mini",
-
-        messages: [aiSystemMessage, userMessage],
+        temperature: 1, // Zwiększ dla większej kreatywności (zakład 0.1-1.0)
+        topP: 1, // Dodaj to dla lepszej różnorodności
+        frequencyPenalty: 0.8, // Kara za powtarzanie tych samych słów
+        presencePenalty: 0.8, // Kara za powtarzanie tematów
+        messages: requestMessages,
       );
 
-      await for (final chatCompletion in stream) {
-        final content = chatCompletion.choices.first.delta.content;
-        if (content != null) {
-          yield content[0]?.text ?? "chujowa abstrakcja xd";
-        }
-      }
+      final jsonResponse = jsonDecode(
+        response.choices.first.message.content![0].text!.trim(),
+      );
+
+      final List<dynamic> questions = jsonResponse['questions'];
+      print(questions);
+      return questions.map((question) => Question.fromJson(question)).toList();
     } catch (e) {
-      print('Error generating stream: $e');
-      yield 'An error occurred.';
+      print('Error in create: $e');
+      return [];
     }
   }
 }

@@ -1,14 +1,19 @@
 import 'dart:ui';
 
 import 'package:asq_app/spaces.dart';
-import 'package:asq_app/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GlassButton extends StatelessWidget {
-  final String text;
+  final Widget child;
   final Function onPressed;
-  const GlassButton({super.key, required this.text, required this.onPressed});
+  final EdgeInsets? padding;
+  const GlassButton({
+    super.key,
+    required this.child,
+    required this.onPressed,
+    this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +24,9 @@ class GlassButton extends StatelessWidget {
         child: CupertinoButton(
           color: Colors.white.withAlpha(50),
           borderRadius: BorderRadius.circular(50),
-          padding: EdgeInsets.symmetric(vertical: p1, horizontal: p6),
-          child: Text(text, style: TextStyle(color: sessionTextColor)),
+          padding:
+              padding ?? EdgeInsets.symmetric(vertical: p1, horizontal: p6),
+          child: child,
           onPressed: () {
             onPressed();
           },

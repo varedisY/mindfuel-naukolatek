@@ -1,10 +1,10 @@
-import 'dart:ffi';
-
+import 'package:asq_app/modals/welcome_modal.dart';
 import 'package:asq_app/models/question.dart';
+import 'package:asq_app/screens/question.dart';
+import 'package:asq_app/screens/session_outcome.dart';
 import 'package:asq_app/spaces.dart';
 import 'package:asq_app/styles.dart';
-import 'package:asq_app/widgets/hint.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:asq_app/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 
 class Session extends StatefulWidget {
@@ -16,30 +16,86 @@ class Session extends StatefulWidget {
 }
 
 class _SessionState extends State<Session> {
-  bool showHints = false;
+  final PageController _controller = PageController();
+  late List<String> answers;
+
+  @override
+  void initState() {
+    super.initState();
+
+    answers = List.generate(widget.questions.length, (index) => "");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Stack(
       children: [
-        AutoSizeText(
-          maxLines: 3,
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CupertinoButton(
+                  padding: EdgeInsets.all(0),
+                  child: Text(
+                    "Wstecz",
+                    style: TextStyle(color: sessionTextColor),
+                  ),
+                  onPressed: () {
+                    _controller.previousPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                ),
+                CupertinoButton(
+                  padding: EdgeInsets.all(0),
+                  child: Text(
+                    "Dalej",
+                    style: TextStyle(color: sessionTextColor),
+                  ),
+                  onPressed: () {
+                    final isLast =
+                        _controller.page!.toInt() ==
+                        widget.questions.length - 1;
+                    if (isLast) {
+                      Navigator.of(context).pushNamed(
+                        "/session-outcome",
+                        arguments: SessionOutcomeArgs(
+                          widget.questions,
+                          answers,
+                        ),
+                      );
 
-          widget.questions[0].content,
-          style: TextStyle(color: sessionTextColor, fontSize: 40),
-        ),
+                      return;
+                    }
 
-        SizedBox(height: p4),
-        Hints(texts: widget.questions[0].hints, visible: false),
-        SizedBox(height: p4),
+                    _controller.nextPage(
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: p4),
+            Expanded(
+              child: PageView.builder(
+                controller: _controller,
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.questions.length,
+                itemBuilder: (context, index) {
+                  final isLast = index == widget.questions.length - 1;
 
-        CupertinoTextField.borderless(
-          autofocus: true,
-          maxLines: null,
-          placeholder: "Your answer here...",
-          placeholderStyle: TextStyle(color: sessionTextColor),
-          style: TextStyle(color: sessionTextColor),
-          cursorColor: sessionTextColor,
+                  return QuestionForm(
+                    onAnswerChanged: (value) => {answers[index] = value},
+                    question: widget.questions[index],
+                    isLast: isLast,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );

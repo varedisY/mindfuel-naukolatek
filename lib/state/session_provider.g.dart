@@ -6,7 +6,7 @@ part of 'session_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$questionsHash() => r'a6c2a8d0303583bf7cd5d3f59ed6eab6558a90dd';
+String _$questionsHash() => r'bf7f8db8139367857afab9eb6245676c884b9dd3';
 
 /// This will create a provider named `activityProvider`
 /// which will cache the result of this function.

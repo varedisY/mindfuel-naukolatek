@@ -15,7 +15,7 @@ class _PlaygroundState extends State<Playground> {
   final AIService aiService = AIService();
 
   generateResponse() {
-    aiService.create().then((v) {
+    aiService.createQuestions().then((v) {
       setState(() {
         questions = v;
       });

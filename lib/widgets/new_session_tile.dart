@@ -21,13 +21,7 @@ class NewSessionTile extends StatelessWidget {
           CupertinoButton(
             child: Icon(CupertinoIcons.add_circled, size: p8),
             onPressed: () {
-              showCupertinoDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  return SessionWrapper();
-                },
-              );
+              Navigator.of(context).pushNamed("/session");
             },
           ),
           Text(
