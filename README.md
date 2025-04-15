@@ -1,4 +1,4 @@
-# asq_app
+# SESSIONS APP
 
 A new Flutter project.
 
