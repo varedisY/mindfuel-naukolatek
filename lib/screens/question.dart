@@ -1,7 +1,6 @@
 import 'package:asq_app/models/question.dart';
 import 'package:asq_app/spaces.dart';
 import 'package:asq_app/styles.dart';
-import 'package:asq_app/widgets/button.dart';
 import 'package:asq_app/widgets/hint.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +42,7 @@ class _QuestionFormState extends State<QuestionForm> {
         CupertinoTextField.borderless(
           autofocus: true,
           maxLines: null,
-          placeholder: "Twoja Odpowiedź...",
+          placeholder: "Your answer...",
           onChanged: (value) {
             widget.onAnswerChanged(value);
             // widget.question.content = value;

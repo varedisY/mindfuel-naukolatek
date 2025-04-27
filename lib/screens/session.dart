@@ -1,14 +1,13 @@
-import 'package:asq_app/modals/welcome_modal.dart';
 import 'package:asq_app/models/question.dart';
 import 'package:asq_app/screens/question.dart';
 import 'package:asq_app/screens/session_outcome.dart';
 import 'package:asq_app/spaces.dart';
 import 'package:asq_app/styles.dart';
-import 'package:asq_app/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 
 class Session extends StatefulWidget {
   final List<Question> questions;
+
   const Session({super.key, required this.questions});
 
   @override
@@ -16,88 +15,110 @@ class Session extends StatefulWidget {
 }
 
 class _SessionState extends State<Session> {
-  final PageController _controller = PageController();
-  late List<String> answers;
+  late final PageController _pageController;
+  late final List<String> _answers;
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
+    _answers = List.filled(widget.questions.length, "");
+    _pageController.addListener(_updateCurrentPageIndex);
+  }
 
-    answers = List.generate(widget.questions.length, (index) => "");
+  @override
+  void dispose() {
+    _pageController.removeListener(_updateCurrentPageIndex);
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _updateCurrentPageIndex() {
+    setState(() {
+      _currentPageIndex = _pageController.page?.round() ?? 0;
+    });
+  }
+
+  void _handlePreviousPressed() {
+    if (_currentPageIndex > 0) {
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _handleNextPressed() {
+    if (_currentPageIndex == widget.questions.length - 1) {
+      _navigateToResults();
+    } else {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _navigateToResults() {
+    Navigator.of(context).pushReplacementNamed(
+      "/session-outcome",
+      arguments: SessionOutcomeArgs(widget.questions, _answers),
+    );
+  }
+
+  void _updateAnswer(int index, String value) {
+    _answers[index] = value;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
-        Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  child: Text(
-                    "Wstecz",
-                    style: TextStyle(color: sessionTextColor),
-                  ),
-                  onPressed: () {
-                    _controller.previousPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                ),
-                CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  child: Text(
-                    "Dalej",
-                    style: TextStyle(color: sessionTextColor),
-                  ),
-                  onPressed: () {
-                    final isLast =
-                        _controller.page!.toInt() ==
-                        widget.questions.length - 1;
-                    if (isLast) {
-                      Navigator.of(context).pushNamed(
-                        "/session-outcome",
-                        arguments: SessionOutcomeArgs(
-                          widget.questions,
-                          answers,
-                        ),
-                      );
+        _buildNavigationControls(),
+        SizedBox(height: p4),
+        _buildQuestionsPageView(),
+      ],
+    );
+  }
 
-                      return;
-                    }
-
-                    _controller.nextPage(
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: p4),
-            Expanded(
-              child: PageView.builder(
-                controller: _controller,
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.questions.length,
-                itemBuilder: (context, index) {
-                  final isLast = index == widget.questions.length - 1;
-
-                  return QuestionForm(
-                    onAnswerChanged: (value) => {answers[index] = value},
-                    question: widget.questions[index],
-                    isLast: isLast,
-                  );
-                },
-              ),
-            ),
-          ],
+  Widget _buildNavigationControls() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Text("Back", style: TextStyle(color: sessionTextColor)),
+          onPressed: _currentPageIndex > 0 ? _handlePreviousPressed : null,
+        ),
+        CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Text(
+            _currentPageIndex == widget.questions.length - 1
+                ? "Finish"
+                : "Next",
+            style: TextStyle(color: sessionTextColor),
+          ),
+          onPressed: _handleNextPressed,
         ),
       ],
+    );
+  }
+
+  Widget _buildQuestionsPageView() {
+    return Expanded(
+      child: PageView.builder(
+        controller: _pageController,
+        physics: const ClampingScrollPhysics(),
+        itemCount: widget.questions.length,
+        itemBuilder: (context, index) {
+          return QuestionForm(
+            onAnswerChanged: (value) => _updateAnswer(index, value),
+            question: widget.questions[index],
+            isLast: index == widget.questions.length - 1,
+          );
+        },
+      ),
     );
   }
 }

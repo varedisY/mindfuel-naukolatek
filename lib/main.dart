@@ -1,5 +1,4 @@
 import 'package:asq_app/home.dart';
-import 'package:asq_app/modals/welcome_modal.dart';
 import 'package:asq_app/screens/session_outcome.dart';
 import 'package:asq_app/screens/session_wrapper.dart';
 import 'package:flutter/cupertino.dart';

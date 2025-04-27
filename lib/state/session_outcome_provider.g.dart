@@ -6,7 +6,7 @@ part of 'session_outcome_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$questionsHash() => r'096b1cada0fd2e59162b64976899e0f411b66097';
+String _$outcomeHash() => r'df75484fc1debe2e21c7cb71d8a717642d3c2e09';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,32 +32,32 @@ class _SystemHash {
 /// This will create a provider named `activityProvider`
 /// which will cache the result of this function.
 ///
-/// Copied from [questions].
-@ProviderFor(questions)
-const questionsProvider = QuestionsFamily();
+/// Copied from [outcome].
+@ProviderFor(outcome)
+const outcomeProvider = OutcomeFamily();
 
 /// This will create a provider named `activityProvider`
 /// which will cache the result of this function.
 ///
-/// Copied from [questions].
-class QuestionsFamily extends Family<AsyncValue<List<Question>>> {
+/// Copied from [outcome].
+class OutcomeFamily extends Family<AsyncValue<String>> {
   /// This will create a provider named `activityProvider`
   /// which will cache the result of this function.
   ///
-  /// Copied from [questions].
-  const QuestionsFamily();
+  /// Copied from [outcome].
+  const OutcomeFamily();
 
   /// This will create a provider named `activityProvider`
   /// which will cache the result of this function.
   ///
-  /// Copied from [questions].
-  QuestionsProvider call(SessionOutcomeArgs outcome) {
-    return QuestionsProvider(outcome);
+  /// Copied from [outcome].
+  OutcomeProvider call(SessionOutcomeArgs args) {
+    return OutcomeProvider(args);
   }
 
   @override
-  QuestionsProvider getProviderOverride(covariant QuestionsProvider provider) {
-    return call(provider.outcome);
+  OutcomeProvider getProviderOverride(covariant OutcomeProvider provider) {
+    return call(provider.args);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -72,76 +72,74 @@ class QuestionsFamily extends Family<AsyncValue<List<Question>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'questionsProvider';
+  String? get name => r'outcomeProvider';
 }
 
 /// This will create a provider named `activityProvider`
 /// which will cache the result of this function.
 ///
-/// Copied from [questions].
-class QuestionsProvider extends AutoDisposeFutureProvider<List<Question>> {
+/// Copied from [outcome].
+class OutcomeProvider extends AutoDisposeFutureProvider<String> {
   /// This will create a provider named `activityProvider`
   /// which will cache the result of this function.
   ///
-  /// Copied from [questions].
-  QuestionsProvider(SessionOutcomeArgs outcome)
+  /// Copied from [outcome].
+  OutcomeProvider(SessionOutcomeArgs args)
     : this._internal(
-        (ref) => questions(ref as QuestionsRef, outcome),
-        from: questionsProvider,
-        name: r'questionsProvider',
+        (ref) => outcome(ref as OutcomeRef, args),
+        from: outcomeProvider,
+        name: r'outcomeProvider',
         debugGetCreateSourceHash:
             const bool.fromEnvironment('dart.vm.product')
                 ? null
-                : _$questionsHash,
-        dependencies: QuestionsFamily._dependencies,
-        allTransitiveDependencies: QuestionsFamily._allTransitiveDependencies,
-        outcome: outcome,
+                : _$outcomeHash,
+        dependencies: OutcomeFamily._dependencies,
+        allTransitiveDependencies: OutcomeFamily._allTransitiveDependencies,
+        args: args,
       );
 
-  QuestionsProvider._internal(
+  OutcomeProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.outcome,
+    required this.args,
   }) : super.internal();
 
-  final SessionOutcomeArgs outcome;
+  final SessionOutcomeArgs args;
 
   @override
-  Override overrideWith(
-    FutureOr<List<Question>> Function(QuestionsRef provider) create,
-  ) {
+  Override overrideWith(FutureOr<String> Function(OutcomeRef provider) create) {
     return ProviderOverride(
       origin: this,
-      override: QuestionsProvider._internal(
-        (ref) => create(ref as QuestionsRef),
+      override: OutcomeProvider._internal(
+        (ref) => create(ref as OutcomeRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        outcome: outcome,
+        args: args,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Question>> createElement() {
-    return _QuestionsProviderElement(this);
+  AutoDisposeFutureProviderElement<String> createElement() {
+    return _OutcomeProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is QuestionsProvider && other.outcome == outcome;
+    return other is OutcomeProvider && other.args == args;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, outcome.hashCode);
+    hash = _SystemHash.combine(hash, args.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -149,18 +147,17 @@ class QuestionsProvider extends AutoDisposeFutureProvider<List<Question>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin QuestionsRef on AutoDisposeFutureProviderRef<List<Question>> {
-  /// The parameter `outcome` of this provider.
-  SessionOutcomeArgs get outcome;
+mixin OutcomeRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `args` of this provider.
+  SessionOutcomeArgs get args;
 }
 
-class _QuestionsProviderElement
-    extends AutoDisposeFutureProviderElement<List<Question>>
-    with QuestionsRef {
-  _QuestionsProviderElement(super.provider);
+class _OutcomeProviderElement extends AutoDisposeFutureProviderElement<String>
+    with OutcomeRef {
+  _OutcomeProviderElement(super.provider);
 
   @override
-  SessionOutcomeArgs get outcome => (origin as QuestionsProvider).outcome;
+  SessionOutcomeArgs get args => (origin as OutcomeProvider).args;
 }
 
 // ignore_for_file: type=lint

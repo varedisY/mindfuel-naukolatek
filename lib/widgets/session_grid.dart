@@ -20,7 +20,7 @@ class SessionGrid extends StatelessWidget {
           if (index == 0) return NewSessionTile();
           return SessionTile();
         },
-        childCount: 20, // Number of items
+        childCount: 1, // Number of items
       ),
     );
   }
