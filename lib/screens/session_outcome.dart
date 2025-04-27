@@ -1,27 +1,25 @@
+import 'package:asq_app/home.dart';
 import 'package:asq_app/models/question.dart';
 import 'package:asq_app/spaces.dart';
 import 'package:asq_app/state/session_outcome_provider.dart';
 import 'package:asq_app/styles.dart';
-import 'package:asq_app/widgets/background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SessionOutcomeArgs {
+class SessionOutcomeData {
   final List<Question> questions;
   final List<String> answers;
 
-  SessionOutcomeArgs(this.questions, this.answers);
+  SessionOutcomeData(this.questions, this.answers);
 }
 
 class SessionOutcome extends ConsumerWidget {
-  const SessionOutcome({super.key});
+  final SessionOutcomeData outcome;
+  const SessionOutcome({super.key, required this.outcome});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as SessionOutcomeArgs;
-
     return CupertinoPageScaffold(
       child: CustomScrollView(
         slivers: [
@@ -31,7 +29,10 @@ class SessionOutcome extends ConsumerWidget {
               padding: EdgeInsets.all(0),
               child: Text("Return to home"),
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed("/");
+                Navigator.pushReplacement(
+                  context,
+                  CupertinoPageRoute(builder: (context) => HomeScreen()),
+                );
               },
             ),
           ),
@@ -39,7 +40,7 @@ class SessionOutcome extends ConsumerWidget {
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: p4, vertical: p4),
             sliver: ref
-                .watch(outcomeProvider(args))
+                .watch(outcomeProvider(outcome))
                 .when(
                   data: (data) {
                     return SliverList.list(children: [Text(data)]);

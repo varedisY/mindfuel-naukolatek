@@ -21,7 +21,10 @@ class NewSessionTile extends StatelessWidget {
           CupertinoButton(
             child: Icon(CupertinoIcons.add_circled, size: p8),
             onPressed: () {
-              Navigator.of(context).pushNamed("/session");
+              Navigator.pushReplacement(
+                context,
+                CupertinoPageRoute(builder: (context) => SessionWrapper()),
+              );
             },
           ),
           Text(

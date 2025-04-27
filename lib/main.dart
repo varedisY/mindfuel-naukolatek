@@ -18,16 +18,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-      initialRoute: "/",
-
-      routes: {
-        "/": (context) => HomeScreen(),
-        "/session": (context) => SessionWrapper(),
-        "/session-outcome": (context) => SessionOutcome(),
-      },
-
-      debugShowCheckedModeBanner: false,
-    );
+    return CupertinoApp(home: HomeScreen(), debugShowCheckedModeBanner: false);
   }
 }

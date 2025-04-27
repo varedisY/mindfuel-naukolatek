@@ -6,7 +6,7 @@ part of 'session_outcome_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$outcomeHash() => r'df75484fc1debe2e21c7cb71d8a717642d3c2e09';
+String _$outcomeHash() => r'4c034e1d52eb2f5f67417f16105a621194d79c8c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -51,7 +51,7 @@ class OutcomeFamily extends Family<AsyncValue<String>> {
   /// which will cache the result of this function.
   ///
   /// Copied from [outcome].
-  OutcomeProvider call(SessionOutcomeArgs args) {
+  OutcomeProvider call(SessionOutcomeData args) {
     return OutcomeProvider(args);
   }
 
@@ -84,7 +84,7 @@ class OutcomeProvider extends AutoDisposeFutureProvider<String> {
   /// which will cache the result of this function.
   ///
   /// Copied from [outcome].
-  OutcomeProvider(SessionOutcomeArgs args)
+  OutcomeProvider(SessionOutcomeData args)
     : this._internal(
         (ref) => outcome(ref as OutcomeRef, args),
         from: outcomeProvider,
@@ -108,7 +108,7 @@ class OutcomeProvider extends AutoDisposeFutureProvider<String> {
     required this.args,
   }) : super.internal();
 
-  final SessionOutcomeArgs args;
+  final SessionOutcomeData args;
 
   @override
   Override overrideWith(FutureOr<String> Function(OutcomeRef provider) create) {
@@ -149,7 +149,7 @@ class OutcomeProvider extends AutoDisposeFutureProvider<String> {
 // ignore: unused_element
 mixin OutcomeRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `args` of this provider.
-  SessionOutcomeArgs get args;
+  SessionOutcomeData get args;
 }
 
 class _OutcomeProviderElement extends AutoDisposeFutureProviderElement<String>
@@ -157,7 +157,7 @@ class _OutcomeProviderElement extends AutoDisposeFutureProviderElement<String>
   _OutcomeProviderElement(super.provider);
 
   @override
-  SessionOutcomeArgs get args => (origin as OutcomeProvider).args;
+  SessionOutcomeData get args => (origin as OutcomeProvider).args;
 }
 
 // ignore_for_file: type=lint

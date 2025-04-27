@@ -79,7 +79,7 @@ FORMAT:
     OpenAI.apiKey = apiKey;
   }
 
-  Future<String> createOutcome({required SessionOutcomeArgs args}) async {
+  Future<String> createOutcome({required SessionOutcomeData args}) async {
     final userMessageContent = args.questions
         .asMap()
         .entries

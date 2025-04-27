@@ -1,3 +1,4 @@
+import 'package:asq_app/home.dart';
 import 'package:asq_app/models/question.dart';
 import 'package:asq_app/screens/question.dart';
 import 'package:asq_app/screens/session_outcome.dart';
@@ -61,9 +62,14 @@ class _SessionState extends State<Session> {
   }
 
   void _navigateToResults() {
-    Navigator.of(context).pushReplacementNamed(
-      "/session-outcome",
-      arguments: SessionOutcomeArgs(widget.questions, _answers),
+    Navigator.pushReplacement(
+      context,
+      CupertinoPageRoute(
+        builder:
+            (context) => SessionOutcome(
+              outcome: SessionOutcomeData(widget.questions, _answers),
+            ),
+      ),
     );
   }
 

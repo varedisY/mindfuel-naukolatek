@@ -1,3 +1,4 @@
+import 'package:asq_app/home.dart';
 import 'package:asq_app/screens/session.dart';
 import 'package:asq_app/screens/session_loading.dart';
 import 'package:asq_app/spaces.dart';
@@ -6,6 +7,7 @@ import 'package:asq_app/styles.dart';
 import 'package:asq_app/widgets/background.dart';
 import 'package:asq_app/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SessionWrapper extends ConsumerWidget {
@@ -48,7 +50,13 @@ class SessionWrapper extends ConsumerWidget {
                         style: TextStyle(color: sessionTextColor),
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoDialogRoute(
+                            context: context,
+                            builder: (context) => HomeScreen(),
+                          ),
+                        );
                       },
                     ),
                   ],

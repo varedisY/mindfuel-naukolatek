@@ -10,7 +10,7 @@ part 'session_outcome_provider.g.dart';
 /// This will create a provider named `activityProvider`
 /// which will cache the result of this function.
 @riverpod
-Future<String> outcome(Ref ref, SessionOutcomeArgs args) async {
+Future<String> outcome(Ref ref, SessionOutcomeData args) async {
   final aiService = AIService();
 
   return await aiService.createOutcome(args: args);
