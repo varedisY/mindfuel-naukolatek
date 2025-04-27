@@ -38,12 +38,14 @@ class SessionOutcome extends ConsumerWidget {
           ),
 
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: p4, vertical: p4),
+            padding: EdgeInsets.all(p4),
             sliver: ref
                 .watch(outcomeProvider(outcome))
                 .when(
                   data: (data) {
-                    return SliverList.list(children: [Text(data)]);
+                    return SliverList.list(
+                      children: [Text(data), SizedBox(height: p10)],
+                    );
                   },
                   error: (e, v) {
                     return SliverFillRemaining(
